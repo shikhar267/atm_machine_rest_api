@@ -15,7 +15,7 @@
 }
 
 4) localhost:8080/account/withdraw/2/1000
-where 2 is account number and 100 is withdrwal amount
+where 2 is account number and 1000 is withdrwal amount
 
 5) localhost:8080/account/deposit/2/1000
 where 2 is account number and 100 is deposit amount
