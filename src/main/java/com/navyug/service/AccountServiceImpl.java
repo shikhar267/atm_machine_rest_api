@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
+import javax.persistence.OptimisticLockException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -41,7 +42,9 @@ public class AccountServiceImpl implements AccountService {
 			} else {
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Account is not found. Please swipe again");
 			}
-		} catch (Exception ex) {
+		}catch(OptimisticLockException ex) {
+			throw new AccountException(ex.getMessage());
+		}catch (Exception ex) {
 			throw new AccountException(ex.getMessage());
 		}
 	}
@@ -63,6 +66,8 @@ public class AccountServiceImpl implements AccountService {
 			} else {
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Account is not found. Please swipe again");
 			}
+		}catch(OptimisticLockException ex) {
+			throw new AccountException(ex.getMessage());
 		} catch (Exception ex) {
 			throw new AccountException(ex.getMessage());
 		}
