@@ -2,6 +2,9 @@ package com.navyug.service;
 
 import java.util.Optional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.LockModeType;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,15 +19,19 @@ public class AccountServiceImpl implements AccountService {
 
 	@Autowired
 	AccountRepo accountRepo;
-
+	//@PersistenceContext
+	//EntityManager enitityManager;
 	@Override
 	public ResponseEntity<String> withdraw(int accountNumber, double amount) throws AccountException {
 		try {
 			Optional<Account> accountOp = accountRepo.findById(accountNumber);
+			
+			//Account account = enitityManager.find(Account.class, accountNumber,LockModeType.OPTIMISTIC_FORCE_INCREMENT);
 			if (accountOp.isPresent()) {
 				Account account = accountOp.get();
 				double balance = account.getAmmount();
 				if (balance >= amount) {
+					//Thread.sleep(55555);
 					account.setAmmount(balance - amount);
 					accountRepo.save(account);
 					return ResponseEntity.status(HttpStatus.OK).body("Cash withdrwal is done please enjoy");
@@ -43,6 +50,8 @@ public class AccountServiceImpl implements AccountService {
 	public ResponseEntity<String> deposit(int accountNumber, double amount) throws AccountException {
 		try {
 			Optional<Account> accountOp = accountRepo.findById(accountNumber);
+			//Account account = enitityManager.find(Account.class, accountNumber,LockModeType.OPTIMISTIC_FORCE_INCREMENT);
+			//Thread.sleep(55555);
 			if (accountOp.isPresent()) {
 				Account account = accountOp.get();
 				double balance = account.getAmmount();
@@ -63,6 +72,7 @@ public class AccountServiceImpl implements AccountService {
 	public ResponseEntity<String> checkBalance(int accountNumber) throws AccountException {
 		try {
 			Optional<Account> accountOp = accountRepo.findById(accountNumber);
+			//Thread.sleep(10000);
 			if (accountOp.isPresent()) {
 				Account account = accountOp.get();
 				return ResponseEntity.status(HttpStatus.OK).body("Your balance is::" + account.getAmmount());

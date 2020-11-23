@@ -10,7 +10,7 @@ import com.navyug.service.AccountService;
 
 @RestController
 public class AccountControllerImpl implements AccountController {
-
+ 
 	@Autowired
 	AccountService accountService;
 
